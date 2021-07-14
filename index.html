@@ -172,7 +172,7 @@ pre code {
 
 
 <p>#ExporATE vignette</p>
-<p>This vignette implements the ExplorATE package on different data sets, both for model and non-model organisms. You can find detailed information on each function in the users’ <a href="https://github.com/FemeniasM/ExplorATEproject/user_guide">guide</a>.</p>
+<p>This vignette implements the ExplorATE package on different data sets, both for model and non-model organisms. You can find detailed information on each function in the users’ <a href="https://femeniasm.github.io/ExplorATE_user_guide/">guide</a>.</p>
 <div id="t1" class="section level2">
 <h2>1. Analysis with model organisms</h2>
 <div id="t1.1" class="section level3">
@@ -238,7 +238,7 @@ mv dm3.fa.out.gz dm_RMgen.out.gz</code></pre>
 <pre class="bash"><code>gzip -d *.gz</code></pre>
 <p>The next step is to carry out the <em>de novo</em> assembly of the transcriptome. To run this vignette we provide a <em>de novo</em> transcriptome for <em>Drosophila melanogaster</em> that you can download with the code below. We suggest that you follow the recommendations detailed in this <a href="https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html">link</a> when analyzing your data. Downloading the <em>de novo</em> transcriptome</p>
 <pre class="bash"><code>wget https://github.com/FemeniasM/ExplorATE_data_test/drosophila/dm_transcriptome.fa.gz</code></pre>
-<p>Next, you have to mask the transcriptome with RepeatMasker. You should use a library suitable for the study organism (see the user <a href="https://github.com/FemeniasM/ExplorATEproject/user_guide/ExplorATE_userGuide_v1.pdf">guide</a> for details). You can also incorporate repeats <em>de novo</em> for the species of interest. This <a href="https://blaxter-lab-documentation.readthedocs.io/en/latest/repeatmodeler.html">link</a> provides useful information on how to generate <em>de novo</em> libraries and combine them with RepeatMasker libraries. For the <em>Drosophila</em> dataset we will use the RepeatMasker database assigning as “DNA source” <code>Drosophila</code>.The user can download a file provided by the program or can generate it using RepeatMasker. The two options are shown below: Downloading the file provided by ExplorATE:</p>
+<p>Next, you have to mask the transcriptome with RepeatMasker. You should use a library suitable for the study organism (see the user <a href="https://femeniasm.github.io/ExplorATE_user_guide/">guide</a> for details). You can also incorporate repeats <em>de novo</em> for the species of interest. This <a href="https://blaxter-lab-documentation.readthedocs.io/en/latest/repeatmodeler.html">link</a> provides useful information on how to generate <em>de novo</em> libraries and combine them with RepeatMasker libraries. For the <em>Drosophila</em> dataset we will use the RepeatMasker database assigning as “DNA source” <code>Drosophila</code>.The user can download a file provided by the program or can generate it using RepeatMasker. The two options are shown below: Downloading the file provided by ExplorATE:</p>
 <pre class="bash"><code>wget https://github.com/FemeniasM/ExplorATE_data_test/drosophila/dm_RMtr.out.gz</code></pre>
 <p>Generating the file with RepeatMasker:</p>
 <pre class="bash"><code>RepeatMasker -species Drosophila -a -e rmblast -pa &lt;threads&gt; -nolow -xm -u -gff 
@@ -293,8 +293,7 @@ dm_ref &lt;- ExplorATE::mk.reference_mo(bedtools=&quot;bedtools&quot;,
 <p>And run the script:</p>
 <pre class="bash"><code>bash mkinputs.sh -p &lt;threads&gt; -b &lt;blastp binary path&gt; -h &lt;hmmer binary path&gt; 
 -r &lt;RepeatMasker binary path&gt; -d &lt;TransDecoder directory path&gt; -s &lt;swissprot database&gt; 
--f &lt;Pfam database&gt; -l &lt;Repeats library&gt; -t &lt;transcriptome file&gt; -o &lt;output directory&gt;
-</code></pre>
+-f &lt;Pfam database&gt; -l &lt;Repeats library&gt; -t &lt;transcriptome file&gt; -o &lt;output directory&gt;</code></pre>
 <p>The script will generate the corresponding input files, except for the transcriptome which must be <em>de novo</em> assembled by the user or use the provided transcriptome(<code>Lp_trme.fasta</code>). For the execution of the next steps in the vignette we assume that all the input files are in a folder named <code>Lparthenos</code>.</p>
 </div>
 <div id="t2.2" class="section level3">
@@ -318,7 +317,7 @@ Lp.references &lt;- ExplorATE::mk.reference(
                                       over.res= &quot;HS&quot;,
                                       annot_by = &quot;transcripts&quot;
                                       )</code></pre>
-<p>First, we will get a message <code>&quot;please press &#39;y&#39; if the names are correct&quot;</code> to verify that the names assigned to each repetition do not contain ambiguities (consult the users’ <a href="https://github.com/FemeniasM/ExplorATEproject/user_guide">guide</a>. Press <code>&#39;y&#39;+ENTER</code> and you will continue with the exclusion of elements co-transcribed with genes and the resolution of overlaps by the highest score. Finally, the annotation of transcripts by class of the repeats will be carried out and the <code>decoys.txt</code> and <code>trmeSalmon.fasta</code> files will be returned for the estimation of abundances in Salmon.</p>
+<p>First, we will get a message <code>&quot;please press &#39;y&#39; if the names are correct&quot;</code> to verify that the names assigned to each repetition do not contain ambiguities (consult the users’ <a href="https://femeniasm.github.io/ExplorATE_user_guide/">guide</a>. Press <code>&#39;y&#39;+ENTER</code> and you will continue with the exclusion of elements co-transcribed with genes and the resolution of overlaps by the highest score. Finally, the annotation of transcripts by class of the repeats will be carried out and the <code>decoys.txt</code> and <code>trmeSalmon.fasta</code> files will be returned for the estimation of abundances in Salmon.</p>
 <p>Next, we carry out the quantification with Salmon:</p>
 <pre class="r"><code>ExplorATE::run.salmon(index = &quot;Lparthenos_index&quot;,
                       decoys = &quot;Lparthenos_out/decoys.txt&quot;,
