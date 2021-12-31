@@ -226,7 +226,7 @@ bash path/to/ExplorATE_shell_script/ExplorATE nmo_in -p 12 -n <blastp binary pat
 -u <SwissProt database> -f <Pfam database> -i <user-defined TE library> -t trme_lp.fa \\
 -o inputs_lp
 ```
-The script above generates the input files to run the ExplorATE pipeline. For the next steps in the vignette it is assumed that all input files are in a folder named ``
+The script above generates the input files to run the ExplorATE pipeline. For the next steps in the vignette it is assumed that all input files are in a folder named `inputs_lp`
 
 The script will generate the corresponding input files, except for the transcriptome which must be *de novo* assembled by the user or use the provided transcriptome (`Lp_trme.fasta`). For the execution of the next steps in the vignette we assume that all the input files are in the `inputs_lp` folder.
 
