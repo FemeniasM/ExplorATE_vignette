@@ -213,13 +213,13 @@ bash path/to/ExplorATE_shell_script/ExplorATE mo -p12 -b path/to/bedtools \\
 -s path/to/salmon -f genome_dm.fa -g geneModel_dm.gtf -r RM_gen_dm.out \\
 -e pe -l reads/ -t trme_dm.fa -u RM_trme_dm.fa -o out_dm_tr
 ```
-Next, the user must import the Salmon estimates into the R environment and will be able to perform the differential expression analyzes as shown in section [2.3](#t2.3)
+Next, the user must import the Salmon estimates into the R environment and will be able to perform the differential expression analyzes as shown in section [4.4](#t4.4)
 
-## 3. Analysis with non-model organisms {#t2}
-### 3.1 Obtaining the data set {#t3.1}
-We will analyze the data set for *Liolaemus parthenos*, the only parthenogenetic lizard of the entire Pleurodonta (Iguanidae) clade. The FASTQ files are available from Gene Expression Omnibus (accession no.`GSE173261`). However in this vignette, we will use a data set with FASTQ files randomly sampled from the original file in order to reduce library sizes and generate replicates for differential expression analysis. Similarly, we randomly sampled 1,000,000 rows from the RepeatMasker output file and reduced the transcriptome size to run the pipeline in a reasonable time for the vignette. First clone the [repository](https://github.com/FemeniasM/ExplorATE_data_test/inputs_lp) to your local directory and descompress all files.
+## 4. Analysis with non-model organisms {#t4}
+### 4.1 Obtaining the data set {#t4.1}
+We will analyze the data set for *Liolaemus parthenos*, the only parthenogenetic lizard of the entire Pleurodonta (Iguanidae) clade. The FASTQ files are available from Gene Expression Omnibus (accession no.`GSE173261`). However in this vignette, we will use a data set with FASTQ files randomly sampled from the original file in order to reduce library sizes and generate replicates for differential expression analysis. Similarly, we subset the RepeatMasker output file and reduced the transcriptome size to run the pipeline in a reasonable time for the vignette. First clone the [repository](https://github.com/FemeniasM/ExplorATE_data_test/inputs_lp) to your local directory and descompress all files.
 
-The `inputs_lp` folder contains the output files for `BLAST`, `TransDecoder`, `RepeatMasker`, and the *de novo* transcriptome. You can use these files directly (continuing with step #[2.2](#t2.2)) or generate them as shown below. To generate the input files with the `nmo_in` mode of the ExplorATE shell script, users can modify the following code:
+The `inputs_lp` folder contains the output files for `BLAST`, `TransDecoder`, `RepeatMasker`, and the *de novo* transcriptome. You can use these files directly (continuing with step #[4.2](#t4.2)) or generate them as shown below. To generate the input files with the `nmo_in` mode of the ExplorATE shell script, users can modify the following code:
 ```{bash, eval=FALSE}
 bash path/to/ExplorATE_shell_script/ExplorATE nmo_in -p 12 -n <blastp binary path> \\
 -m <hmmerscan binary path> -r <RepeatMasker binary path> -d <TransDecoder directory path> \\
@@ -230,7 +230,7 @@ The script above generates the input files to run the ExplorATE pipeline. For th
 
 The script will generate the corresponding input files, except for the transcriptome which must be *de novo* assembled by the user or use the provided transcriptome (`Lp_trme.fasta`). For the execution of the next steps in the vignette we assume that all the input files are in the `inputs_lp` folder.
 
-### 3.1 Running the ExplorATE pipeline for non-model organisms from the shell script {#t3.1}
+### 4.2 Running the ExplorATE pipeline for non-model organisms from the shell script {#t4.2}
 The ExplorATE shell script can run the pipeline in `nmo` mode. Below is the corresponding code for the *L. parthenos* input files.
 
 ```{bash, eval=FALSE}
@@ -240,11 +240,11 @@ bash path/to/ExplorATE_shell_script/ExplorATE nmo -p 12 -b path/to/bedtools \\
 -x subclass -q transcripts
 ```
 
-In the output directory a folder `quant_out` is created with the Salmon estimates and the reference file` references.csv`. These files are used to import estimates into R as shown in section [3.3](#t3.3) . Further, ExplorATE writes a tab separated file (`repeats_in_UTRs.txt`) with the transcripts that contain repeats in the UTR regions. The first column indicates the name of the transcript, the second and third columns indicate the position of the UTR region in the transcript (start and end), the fourth column indicates the type of feature (5'-UTR or 3'-UTR) , the fifth and sixth columns indicate the position of the repeat in the transcript (start and end), and finally the last column indicates the name, class and family of the repeat separated by colon symbols (":", for example, "Plat_L3: LINE: CR1").
+In the output directory a folder `quant_out` is created with the Salmon estimates and the reference file` references.csv`. These files are used to import estimates into R as shown in section [4.4](#t4.4) . Further, ExplorATE writes a tab separated file (`repeats_in_UTRs.txt`) with the transcripts that contain repeats in the UTR regions. The first column indicates the name of the transcript, the second and third columns indicate the position of the UTR region in the transcript (start and end), the fourth column indicates the type of feature (5'-UTR or 3'-UTR) , the fifth and sixth columns indicate the position of the repeat in the transcript (start and end), and finally the last column indicates the name, class and family of the repeat separated by colon symbols (":", for example, "Plat_L3: LINE: CR1").
 
 Users can generate the input files and run the pipeline simultaneously with the shell script's `nmo_all` mode.
 
-### 3.2 Running the ExplorATE pipeline for non-model organisms with functions from the R package {#t3.2}
+### 4.3 Running the ExplorATE pipeline for non-model organisms with functions from the R package {#t4.3}
 To run the pipeline from the R ExplorATE package, assign the `inputs_lp` folder as the working directory and create the reference files for the salmon run.
 ```{r eval=FALSE}
 setwd("path/to/folder/inputs_lp")
@@ -285,7 +285,7 @@ ExplorATE::run.salmon(index = "Lparthenos_index",
 
 Similar to the shell script, this function creates a folder `quant_out` in the working directory that contains the Salmon estimates and a reference file `references.csv` that are used to import the estimates as shown in the next section.
 
-### 3.3 Importing estimates to R and estimating differential expression  {#t3.3}
+### 4.4 Importing estimates to R and estimating differential expression  {#t4.4}
 
 The last step is to import the estimates into the R environment for subsequent analyzes such as differential expression analysis. The `import.RTEs()` function allows to import the estimates and create ready-to-use objects  `DGEList` or `DESeqDataSet` for edgeR or DESeq respectively. Below is an example of how to import the estimates and perform the expression analysis in edgeR.
 ```{r eval=FALSE}
@@ -339,5 +339,3 @@ topTags_OvsL[topTags_OvsL$table$FDR<.05,]
 topTags_BvsL <- edgeR::topTags(qlf_BvsL, n = nrow(qlf_BvsL$table),sort.by = "none")
 topTags_BvsL[topTags_BvsL$table$FDR<.05,]
 ```
-
-
